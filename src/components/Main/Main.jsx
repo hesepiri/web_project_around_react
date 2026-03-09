@@ -5,6 +5,7 @@ import NewCard from "./form/NewCard/NewCard";
 import EditProfile from "./form/EditProfile/EditProfile";
 import EditAvatar from "./form/EditAvatar/EditAvatar";
 import Card from "./components/Card/Card";
+import ImagePopup from "./components/ImagePopup/ImagePopup";
 
 const cards = [
   {
@@ -30,6 +31,10 @@ console.log(cards); // Para que los veas en la consola (F12)
 function Main() {
   const [popup, setPopup] = useState(null);
 
+  function handleClosePopup() {
+    setPopup(null);
+  }
+
   const newCardPopup = {
     title: "Nuevo lugar",
     children: <NewCard onClose={handleClosePopup} />,
@@ -47,8 +52,12 @@ function Main() {
     setPopup(popupConfig);
   }
 
-  function handleClosePopup() {
-    setPopup(null);
+  function handleCardClick(card) {
+    const imagePopupConfig = {
+      title: "",
+      children: <ImagePopup card={card} />,
+    };
+    handleOpenPopup(imagePopupConfig);
   }
 
   return (
@@ -65,14 +74,14 @@ function Main() {
         </div>
 
         <div className="profile__info">
-          <h1 className="profile__title">Cargando...</h1>
+          <h1 className="profile__title">Rodolfo Neri Vela</h1>
           <button
             aria-label="Editar perfil"
             className="profile__edit-button"
             type="button"
             onClick={() => handleOpenPopup(editProfilePopup)}
           ></button>
-          <p className="profile__description">Cargando...</p>
+          <p className="profile__description">Astronauta</p>
         </div>
 
         <button
@@ -86,7 +95,7 @@ function Main() {
       <section className="cards page__section">
         <ul className="cards__list">
           {cards.map((card) => (
-            <Card key={card._id} card={card} />
+            <Card key={card._id} card={card} onCardClick={handleCardClick} /> // Pasamos la función a cada tarjeta
           ))}
         </ul>
       </section>

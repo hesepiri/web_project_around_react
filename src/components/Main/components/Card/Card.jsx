@@ -1,6 +1,7 @@
 export default function Card(props) {
   // Desestructuramos el objeto card que viene desde las props
-  const { name, link, isLiked } = props.card;
+  const { name, link } = props.card;
+  const { onCardClick } = props; // Recibimos la función de apertura
 
   return (
     <li className="card">
@@ -8,6 +9,7 @@ export default function Card(props) {
         className="card__image"
         src={link}
         alt={name} // Usa el nombre de la tarjeta para el texto alternativo
+        onClick={() => onCardClick(props.card)} // El trigger para abrir el popup con la tarjeta actual
       />
       <button
         aria-label="Eliminar tarjeta"
