@@ -12,7 +12,7 @@ export default function Popup(props) {
     <div className="popup" onClick={handleOverlayClick}>
       <div
         className={`popup__content ${
-          !title ? "popup__content_content_image" : ""
+          !title ? "popup__content_type_image" : ""
         }`}
       >
         <button
