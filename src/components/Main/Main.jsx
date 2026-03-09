@@ -8,14 +8,17 @@ import EditAvatar from "./form/EditAvatar/EditAvatar";
 function Main() {
   const [popup, setPopup] = useState(null);
 
-  const newCardPopup = { title: "Nuevo lugar", children: <NewCard /> };
+  const newCardPopup = {
+    title: "Nuevo lugar",
+    children: <NewCard onClose={handleClosePopup} />,
+  };
   const editProfilePopup = {
     title: "Editar perfil",
-    children: <EditProfile />,
+    children: <EditProfile onClose={handleClosePopup} />,
   };
   const editAvatarPopup = {
     title: "Cambiar foto de perfil",
-    children: <EditAvatar />,
+    children: <EditAvatar onClose={handleClosePopup} />,
   };
 
   function handleOpenPopup(popupConfig) {

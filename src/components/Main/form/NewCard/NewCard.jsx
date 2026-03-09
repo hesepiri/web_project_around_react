@@ -1,10 +1,16 @@
-export default function NewCard() {
+export default function NewCard({ onClose }) {
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    onClose?.(); // El ?. es por si acaso no se pasa la prop, no truene
+  };
+
   return (
     <form
       className="popup__form"
       name="card-form"
       id="new-card-form"
       noValidate
+      onSubmit={handleSubmit}
     >
       <label className="popup__field">
         <input

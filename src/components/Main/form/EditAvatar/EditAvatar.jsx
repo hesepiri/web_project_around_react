@@ -1,6 +1,16 @@
-export default function EditAvatar() {
+export default function EditAvatar({ onClose }) {
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    onClose?.(); // El ?. es por si acaso no se pasa la prop, no truene
+  };
+
   return (
-    <form className="popup__form" name="avatar-form" noValidate>
+    <form
+      className="popup__form"
+      name="avatar-form"
+      noValidate
+      onSubmit={handleSubmit}
+    >
       <label className="popup__field">
         <input
           className="popup__input"
