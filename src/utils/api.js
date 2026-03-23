@@ -83,6 +83,14 @@ class Api {
       headers: this._headers,
     });
   }
+
+  changeLikeCardStatus(cardId, isLiked) {
+    // Si ya tiene like (isLiked es true), lo quitamos (DELETE), si no, lo ponemos (PUT)
+    return this._request(`/cards/${cardId}/likes`, {
+      method: isLiked ? "PUT" : "DELETE", // El boolean decide que metodo usar
+      headers: this._headers,
+    });
+  }
 }
 
 // 1. Creamos la instancia
