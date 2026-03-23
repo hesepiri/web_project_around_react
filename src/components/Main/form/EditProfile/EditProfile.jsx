@@ -1,7 +1,28 @@
+import { useState, useContext, useEffect } from "react";
+import CurrentUserContext from "../../../../contexts/CurrentUserContext";
+
 export default function EditProfile({ onClose }) {
+  const { currentUser, handleUpdateUser } = useContext(CurrentUserContext);
+
+  const [name, setName] = useState(currentUser.name || "");
+  const [description, setDescription] = useState(currentUser.about || "");
+
+  // Efecto para que al abrir el popup se muestre con datos
+  useEffect(() => {
+    setName(currentUser.name);
+    setDescription(currentUser.about);
+  }, [currentUser]); // Queremos que este monitoreando los cambios en currentUser
+
+  const handleNameChange = (e) => {
+    setName(e.target.value);
+  };
+  const handleDescriptionChange = (e) => {
+    setDescription(e.target.value);
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    onClose?.(); // El ?. es por si acaso no se pasa la prop, no truene
+    handleUpdateUser({ name, about: description });
   };
 
   return (
@@ -15,6 +36,8 @@ export default function EditProfile({ onClose }) {
         <input
           className="popup__input"
           name="name"
+          value={name}
+          onChange={handleNameChange}
           placeholder="Nombre"
           required
         />
@@ -22,6 +45,8 @@ export default function EditProfile({ onClose }) {
       <label className="popup__field">
         <input
           className="popup__input"
+          value={description}
+          onChange={handleDescriptionChange}
           name="about"
           placeholder="Acerca de mí"
           required

@@ -3,7 +3,7 @@ import CurrentUserContext from "../../../../contexts/CurrentUserContext";
 
 export default function Card({ card, onCardClick, onCardLike, onCardDelete }) {
   // Obtener usuario actual del contexto
-  const currentUser = useContext(CurrentUserContext);
+  const { currentUser } = useContext(CurrentUserContext);
 
   // Definimos si soy el dueño (isOwn)
   const isOwn = (card.owner?._id || card.owner) === currentUser?._id;

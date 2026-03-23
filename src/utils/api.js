@@ -19,6 +19,14 @@ class Api {
     return Promise.reject(`Error: ${res.status}`);
   }
 
+  setUserInfo({ name, about }) {
+    return this._request("/users/me", {
+      method: "PATCH",
+      headers: this._headers,
+      body: JSON.stringify({ name, about }),
+    });
+  }
+
   getUserInfo() {
     return this._request("/users/me", {
       headers: this._headers,
@@ -28,17 +36,6 @@ class Api {
   getInitialCards() {
     return this._request("/cards", {
       headers: this._headers,
-    });
-  }
-
-  editProfile({ name, about }) {
-    return this._request("/users/me", {
-      method: "PATCH",
-      headers: this._headers,
-      body: JSON.stringify({
-        name,
-        about,
-      }),
     });
   }
 

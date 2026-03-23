@@ -1,17 +1,14 @@
 import React, { useState, useEffect, useContext } from "react";
 import api from "../../utils/api";
-import Popup from "./components/Popup/Popup";
 import NewCard from "./form/NewCard/NewCard";
 import EditProfile from "./form/EditProfile/EditProfile";
 import EditAvatar from "./form/EditAvatar/EditAvatar";
 import Card from "./components/Card/Card";
-import ImagePopup from "./components/ImagePopup/ImagePopup";
 import CurrentUserContext from "../../contexts/CurrentUserContext";
 
-function Main() {
-  const currentUser = useContext(CurrentUserContext);
+function Main({ onOpenPopup, onClosePopup }) {
+  const { currentUser } = useContext(CurrentUserContext);
   const [cards, setCards] = useState([]);
-  const [popup, setPopup] = useState(null);
 
   useEffect(() => {
     api
@@ -24,41 +21,27 @@ function Main() {
       });
   }, []);
 
-  function handleClosePopup() {
-    setPopup(null);
-  }
-
   const newCardPopup = {
     title: "Nuevo lugar",
-    children: <NewCard onClose={handleClosePopup} />,
+    children: <NewCard onClose={onClosePopup} />,
   };
+
   const editProfilePopup = {
     title: "Editar perfil",
-    children: <EditProfile onClose={handleClosePopup} />,
+    children: <EditProfile onClose={onClosePopup} />,
   };
+
   const editAvatarPopup = {
     title: "Cambiar foto de perfil",
-    children: <EditAvatar onClose={handleClosePopup} />,
+    children: <EditAvatar onClose={onClosePopup} />,
   };
-
-  function handleOpenPopup(popupConfig) {
-    setPopup(popupConfig);
-  }
-
-  function handleCardClick(card) {
-    const imagePopupConfig = {
-      title: "",
-      children: <ImagePopup card={card} />,
-    };
-    handleOpenPopup(imagePopupConfig);
-  }
 
   async function handleCardLike(card) {
     // Usamos la lógica blindada para saber si YA tiene like
     const isLiked =
       card.isLiked === true ||
       (Array.isArray(card.likes) &&
-        card.likes.some((user) => user._id === currentUser._id));
+        card.likes.some((user) => user._id === currentUser?._id));
 
     //Enviamos la solicitud a la API (se le pasa !isLiked porque queremos el estado opuesto)
     api
@@ -90,33 +73,33 @@ function Main() {
         <div className="profile__avatar-container">
           <img
             className="profile__image"
-            src={currentUser.avatar}
+            src={currentUser?.avatar}
             alt="Avatar"
           />
           <button
             className="profile__image-edit-button"
             type="button"
             aria-label="Editar foto de perfil"
-            onClick={() => handleOpenPopup(editAvatarPopup)}
+            onClick={() => onOpenPopup(editAvatarPopup)}
           ></button>
         </div>
 
         <div className="profile__info">
-          <h1 className="profile__title">{currentUser.name}</h1>
+          <h1 className="profile__title">{currentUser?.name}</h1>
           <button
             aria-label="Editar perfil"
             className="profile__edit-button"
             type="button"
-            onClick={() => handleOpenPopup(editProfilePopup)}
+            onClick={() => onOpenPopup(editProfilePopup)}
           ></button>
-          <p className="profile__description">{currentUser.about}</p>
+          <p className="profile__description">{currentUser?.about}</p>
         </div>
 
         <button
           aria-label="Agregar tarjeta"
           className="profile__add-button"
           type="button"
-          onClick={() => handleOpenPopup(newCardPopup)}
+          onClick={() => onOpenPopup(newCardPopup)}
         ></button>
       </section>
 
@@ -126,19 +109,12 @@ function Main() {
             <Card
               key={card._id}
               card={card}
-              onCardClick={handleCardClick}
               onCardLike={handleCardLike} // S15 - Nueva prop
               onCardDelete={handleCardDelete} // S15 - Nueva prop
             /> // Pasamos la función a cada tarjeta
           ))}
         </ul>
       </section>
-
-      {popup && (
-        <Popup onClose={handleClosePopup} title={popup.title}>
-          {popup.children}
-        </Popup>
-      )}
     </main>
   );
 }
