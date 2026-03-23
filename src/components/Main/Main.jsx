@@ -53,6 +53,37 @@ function Main() {
     handleOpenPopup(imagePopupConfig);
   }
 
+  async function handleCardLike(card) {
+    // Usamos la lógica blindada para saber si YA tiene like
+    const isLiked =
+      card.isLiked === true ||
+      (Array.isArray(card.likes) &&
+        card.likes.some((user) => user._id === currentUser._id));
+
+    //Enviamos la solicitud a la API (se le pasa !isLiked porque queremos el estado opuesto)
+    api
+      .changeLikeCardStatus(card._id, !isLiked)
+      .then(
+        //Mapeamos el estado actual y reemplazamos solo la tarjeta que fue modificada
+        (newCard) => {
+          setCards((state) =>
+            state.map((c) => (c._id === card._id ? newCard : c)),
+          );
+        },
+      )
+      .catch((err) => console.error("Error en Like:", err));
+  }
+
+  function handleCardDelete(card) {
+    api
+      .deleteCard(card._id)
+      .then(() => {
+        // Actualizamos el estado filtrando la tarjeta eliminada
+        setCards((state) => state.filter((c) => c._id !== card._id));
+      })
+      .catch((err) => console.error("Error al eliminar la tarjeta:", err));
+  }
+
   return (
     <main className="content">
       <section className="profile page__section">
@@ -92,7 +123,13 @@ function Main() {
       <section className="cards page__section">
         <ul className="cards__list">
           {cards.map((card) => (
-            <Card key={card._id} card={card} onCardClick={handleCardClick} /> // Pasamos la función a cada tarjeta
+            <Card
+              key={card._id}
+              card={card}
+              onCardClick={handleCardClick}
+              onCardLike={handleCardLike} // S15 - Nueva prop
+              onCardDelete={handleCardDelete} // S15 - Nueva prop
+            /> // Pasamos la función a cada tarjeta
           ))}
         </ul>
       </section>

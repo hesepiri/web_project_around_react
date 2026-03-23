@@ -35,7 +35,7 @@
 .card__like-button {
   width: 21px;
   height: 19px;
-  background: transparent url("../images/like-inactive.svg") center no-repeat; 
+  background: transparent url("../images/like-inactive.svg") center no-repeat;
   background-size: 21px 18px;
   border: none;
   padding: 0;
@@ -67,4 +67,8 @@
 
 .card__like-button_is-active {
   background: transparent url("../images/like-active.svg") no-repeat;
+}
+
+.card__delete-button_hidden {
+  display: none;
 }

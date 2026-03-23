@@ -23,7 +23,7 @@ export default function NewCard({ onClose }) {
           required
           type="text"
         />
-        <span ClassName="popup__error" id="card-name-error"></span>
+        <span className="popup__error" id="card-name-error"></span>
       </label>
       <label className="popup__field">
         <input
