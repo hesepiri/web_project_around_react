@@ -2,12 +2,14 @@ import React, { useContext } from "react";
 import NewCard from "./form/NewCard/NewCard";
 import EditProfile from "./form/EditProfile/EditProfile";
 import EditAvatar from "./form/EditAvatar/EditAvatar";
+import Popup from "./components/Popup/Popup";
 import Card from "./components/Card/Card";
 import CurrentUserContext from "../../contexts/CurrentUserContext";
 
 function Main({
   onOpenPopup,
   onClosePopup,
+  popup,
   cards, // Recibe las tarjetas del "boss" App
   onCardLike, // Recibe la funcion del "boss" App
   onCardDelete, // Recibe la funcion del "boss" App
@@ -83,6 +85,11 @@ function Main({
           ))}
         </ul>
       </section>
+      {popup && (
+        <Popup onClose={onClosePopup} title={popup.title}>
+          {popup.children}
+        </Popup>
+      )}
     </main>
   );
 }

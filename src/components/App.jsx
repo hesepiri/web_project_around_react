@@ -2,7 +2,6 @@ import Header from "./Header/Header";
 import Main from "./Main/Main";
 import Footer from "./Footer/Footer";
 import api from "../utils/api";
-import Popup from "./Main/components/Popup/Popup";
 import { useState, useEffect } from "react";
 import CurrentUserContext from "../contexts/CurrentUserContext";
 
@@ -131,6 +130,7 @@ function App() {
       <div className="page__content">
         <Header />
         <Main
+          popup={popup}
           cards={cards}
           onOpenPopup={handleOpenPopup}
           onClosePopup={handleClosePopup}
@@ -140,11 +140,6 @@ function App() {
         />
         <Footer />
       </div>
-      {popup && (
-        <Popup onClose={handleClosePopup} title={popup.title}>
-          {popup.children}
-        </Popup>
-      )}
     </CurrentUserContext.Provider>
   );
 }
