@@ -1,10 +1,10 @@
-import Header from "./components/Header/Header";
-import Main from "./components/Main/Main";
-import Footer from "./components/Footer/Footer";
-import api from "./utils/api";
-import Popup from "./components/Main/components/Popup/Popup";
+import Header from "./Header/Header";
+import Main from "./Main/Main";
+import Footer from "./Footer/Footer";
+import api from "../utils/api";
+import Popup from "./Main/components/Popup/Popup";
 import { useState, useEffect } from "react";
-import CurrentUserContext from "./contexts/CurrentUserContext";
+import CurrentUserContext from "../contexts/CurrentUserContext";
 
 function App() {
   const [currentUser, setCurrentUser] = useState({});
