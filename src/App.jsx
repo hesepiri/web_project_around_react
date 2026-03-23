@@ -12,6 +12,9 @@ function App() {
   // Levantamos el estado del popup de Main a App
   const [popup, setPopup] = useState(null);
 
+  // Levantamos el estado de las cards de Main a App
+  const [cards, setCards] = useState([]);
+
   useEffect(() => {
     api
       .getUserInfo()
@@ -19,7 +22,7 @@ function App() {
         setCurrentUser(userData);
       })
       .catch((err) => {
-        console.error("Error al obtener la información del usuario:", err);
+        console.error("Error al obtener la información del usuario: ", err);
       });
   }, []); //Se ejecuta solo una vez al montar el componente
 
@@ -60,7 +63,7 @@ function App() {
         handleClosePopup(); // Cerramos el popup si todo salio bien
       })
       .catch((err) =>
-        console.error("Error al actualizar datos del usuario", err),
+        console.error("Error al actualizar datos del usuario: ", err),
       );
   };
 
@@ -74,9 +77,52 @@ function App() {
         handleClosePopup(); // Cerramos el popup
       })
       .catch((err) =>
-        console.error("Error al actualizar imagen del avatar:", err),
+        console.error("Error al actualizar imagen del avatar: ", err),
       );
   };
+
+  useEffect(() => {
+    api
+      .getInitialCards()
+      .then((initialCards) => setCards(initialCards))
+      .catch((err) => console.error("Error al obtener las tarjetas: ", err));
+  }, []);
+
+  // Función blindada para dar Like (ahora vive en App)
+  async function handleCardLike(card) {
+    const isLiked =
+      card.isLiked === true ||
+      (Array.isArray(card.likes) &&
+        card.likes.some((user) => user._id === currentUser?._id));
+
+    api
+      .changeLikeCardStatus(card._id, !isLiked)
+      .then((newCard) => {
+        setCards((state) =>
+          state.map((c) => (c._id === card._id ? newCard : c)),
+        );
+      })
+      .catch((err) => console.error("Error en Like: ", err));
+  }
+
+  // Función para borrar tarjeta (ahora vive en App)
+  function handleCardDelete(card) {
+    api
+      .deleteCard(card._id)
+      .then(() => setCards((state) => state.filter((c) => c._id !== card._id)))
+      .catch((err) => console.error("Error al eliminar la tarjeta:", err));
+  }
+
+  // Función para agregar una tarjeta
+  function handleAddPlaceSubmit(cardData) {
+    api
+      .addCard(cardData)
+      .then((newCard) => {
+        setCards([newCard, ...cards]); // Magia: ponemos la nueva tarjeta al inicio del arreglo
+        handleClosePopup(); // Cerramos el popup
+      })
+      .catch((err) => console.error("Error al agregar tarjeta:", err));
+  }
 
   return (
     <CurrentUserContext.Provider
@@ -85,9 +131,12 @@ function App() {
       <div className="page__content">
         <Header />
         <Main
+          cards={cards}
           onOpenPopup={handleOpenPopup}
           onClosePopup={handleClosePopup}
-          popup={popup}
+          onCardLike={handleCardLike}
+          onCardDelete={handleCardDelete}
+          onAddPlaceSubmit={handleAddPlaceSubmit}
         />
         <Footer />
       </div>

@@ -1,7 +1,15 @@
-export default function NewCard({ onClose }) {
+import { useRef } from "react";
+
+export default function NewCard({ onClose, onAddPlaceSubmit }) {
+  const titleRef = useRef();
+  const linkRef = useRef();
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    onClose?.(); // El ?. es por si acaso no se pasa la prop, no truene
+    onAddPlaceSubmit({
+      name: titleRef.current.value,
+      link: linkRef.current.value,
+    });
   };
 
   return (
@@ -22,6 +30,7 @@ export default function NewCard({ onClose }) {
           placeholder="Lugar"
           required
           type="text"
+          ref={titleRef} // Vinculamos la referencia
         />
         <span className="popup__error" id="card-name-error"></span>
       </label>
@@ -33,6 +42,7 @@ export default function NewCard({ onClose }) {
           placeholder="Link de la imagen"
           required
           type="url"
+          ref={linkRef} // Vinculamos la referencia
         />
         <span className="popup__error" id="card-link-error"></span>
       </label>

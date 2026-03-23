@@ -1,29 +1,25 @@
-import React, { useState, useEffect, useContext } from "react";
-import api from "../../utils/api";
+import React, { useContext } from "react";
 import NewCard from "./form/NewCard/NewCard";
 import EditProfile from "./form/EditProfile/EditProfile";
 import EditAvatar from "./form/EditAvatar/EditAvatar";
 import Card from "./components/Card/Card";
 import CurrentUserContext from "../../contexts/CurrentUserContext";
 
-function Main({ onOpenPopup, onClosePopup }) {
+function Main({
+  onOpenPopup,
+  onClosePopup,
+  cards, // Recibe las tarjetas del "boss" App
+  onCardLike, // Recibe la funcion del "boss" App
+  onCardDelete, // Recibe la funcion del "boss" App
+  onAddPlaceSubmit,
+}) {
   const { currentUser } = useContext(CurrentUserContext);
-  const [cards, setCards] = useState([]);
-
-  useEffect(() => {
-    api
-      .getInitialCards()
-      .then((initialCards) => {
-        setCards(initialCards);
-      })
-      .catch((err) => {
-        console.error("Error al obtener las tarjetas:", err);
-      });
-  }, []);
 
   const newCardPopup = {
     title: "Nuevo lugar",
-    children: <NewCard onClose={onClosePopup} />,
+    children: (
+      <NewCard onClose={onClosePopup} onAddPlaceSubmit={onAddPlaceSubmit} />
+    ),
   };
 
   const editProfilePopup = {
@@ -36,40 +32,10 @@ function Main({ onOpenPopup, onClosePopup }) {
     children: <EditAvatar onClose={onClosePopup} />,
   };
 
-  async function handleCardLike(card) {
-    // Usamos la lógica blindada para saber si YA tiene like
-    const isLiked =
-      card.isLiked === true ||
-      (Array.isArray(card.likes) &&
-        card.likes.some((user) => user._id === currentUser?._id));
-
-    //Enviamos la solicitud a la API (se le pasa !isLiked porque queremos el estado opuesto)
-    api
-      .changeLikeCardStatus(card._id, !isLiked)
-      .then(
-        //Mapeamos el estado actual y reemplazamos solo la tarjeta que fue modificada
-        (newCard) => {
-          setCards((state) =>
-            state.map((c) => (c._id === card._id ? newCard : c)),
-          );
-        },
-      )
-      .catch((err) => console.error("Error en Like:", err));
-  }
-
-  function handleCardDelete(card) {
-    api
-      .deleteCard(card._id)
-      .then(() => {
-        // Actualizamos el estado filtrando la tarjeta eliminada
-        setCards((state) => state.filter((c) => c._id !== card._id));
-      })
-      .catch((err) => console.error("Error al eliminar la tarjeta:", err));
-  }
-
   return (
     <main className="content">
       <section className="profile page__section">
+        {/* AVATAR */}
         <div className="profile__avatar-container">
           <img
             className="profile__image"
@@ -84,6 +50,7 @@ function Main({ onOpenPopup, onClosePopup }) {
           ></button>
         </div>
 
+        {/* INFO DEL USUARIO */}
         <div className="profile__info">
           <h1 className="profile__title">{currentUser?.name}</h1>
           <button
@@ -95,6 +62,7 @@ function Main({ onOpenPopup, onClosePopup }) {
           <p className="profile__description">{currentUser?.about}</p>
         </div>
 
+        {/* BOTÓN DE AGREGAR TARJETA */}
         <button
           aria-label="Agregar tarjeta"
           className="profile__add-button"
@@ -109,8 +77,8 @@ function Main({ onOpenPopup, onClosePopup }) {
             <Card
               key={card._id}
               card={card}
-              onCardLike={handleCardLike} // S15 - Nueva prop
-              onCardDelete={handleCardDelete} // S15 - Nueva prop
+              onCardLike={onCardLike} // S15 - Nueva prop
+              onCardDelete={onCardDelete} // S15 - Nueva prop
             /> // Pasamos la función a cada tarjeta
           ))}
         </ul>
