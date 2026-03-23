@@ -1,4 +1,4 @@
-import React, { useState, useEffect, use } from "react";
+import React, { useState, useEffect } from "react";
 import api from "../../utils/api";
 import avatar from "../../images/avatar.jpg";
 import Popup from "./components/Popup/Popup";
