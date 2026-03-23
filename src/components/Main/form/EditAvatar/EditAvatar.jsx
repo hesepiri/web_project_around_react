@@ -1,7 +1,19 @@
+import { useRef, useContext } from "react";
+import CurrentUserContext from "../../../../contexts/CurrentUserContext";
+
 export default function EditAvatar({ onClose }) {
+  // Contexto
+  const { handleUpdateAvatar } = useContext(CurrentUserContext);
+
+  // Creamos la referencia
+  const avatarRef = useRef();
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    onClose?.(); // El ?. es por si acaso no se pasa la prop, no truene
+
+    handleUpdateAvatar({
+      avatar: avatarRef.current.value,
+    });
   };
 
   return (
@@ -15,6 +27,7 @@ export default function EditAvatar({ onClose }) {
         <input
           className="popup__input"
           name="avatar"
+          ref={avatarRef} // Vinculamos el input a la referencia
           type="url"
           placeholder="Link de la imagen"
           required

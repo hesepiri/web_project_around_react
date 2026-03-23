@@ -64,8 +64,24 @@ function App() {
       );
   };
 
+  // Funcion para actualzar el avatar
+  const handleUpdateAvatar = (avatarData) => {
+    // Usamos el método updateAvatar que ya tienes en api.js
+    api
+      .updateAvatar(avatarData.avatar)
+      .then((newAvatarData) => {
+        setCurrentUser(newAvatarData); // Actualizamos el usuario con la nueva foto
+        handleClosePopup(); // Cerramos el popup
+      })
+      .catch((err) =>
+        console.error("Error al actualizar imagen del avatar:", err),
+      );
+  };
+
   return (
-    <CurrentUserContext.Provider value={{ currentUser, handleUpdateUser }}>
+    <CurrentUserContext.Provider
+      value={{ currentUser, handleUpdateUser, handleUpdateAvatar }}
+    >
       <div className="page__content">
         <Header />
         <Main
