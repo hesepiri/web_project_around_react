@@ -91,23 +91,6 @@
   display: flex;
 }
 
-/*.popup__content_type_image {
-  max-width: 75vw;
-  max-height: 75vh;
-  height: auto;
-  width: auto;
-  display: flex;
-  background: transparent;
-  border-radius: 0;
-  padding: 0;
-}
-
-.popup__image {
-  max-width: 100%;
-  object-fit: cover;
-}*/
-
-/* Busca y actualiza esta clase */
 .popup__image {
   max-width: 100%;
   max-height: 75vh; /* Evita que la imagen sea más alta que la pantalla */
@@ -116,7 +99,6 @@
   margin: 0 auto;
 }
 
-/* Ajuste adicional para el contenedor de la imagen */
 .popup__content_type_image {
   background: transparent;
   padding: 0;
