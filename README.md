@@ -63,6 +63,11 @@ Durante este sprint, se refactorizó la aplicación para mover la lógica de neg
 
 ---
 
+## 🔗 Demo en vivo
+[Haz clic aquí para ver la aplicación](https://hesepiri.github.io/web_project_around_react/)
+ 
+---
+
 ## Sprint Previo...
 
 # Around the U.S. (React) - Sprint 14
@@ -94,6 +99,11 @@ Esta es la primera fase de la transición del proyecto **Around the U.S.** de Va
 - **Lógica de Cierre**: Los popups se cierran mediante el botón de cerrar, haciendo clic en el overlay o mediante funciones pasadas por props.
 - **Estilos CSS**: Integración de los archivos CSS existentes mediante importaciones en los componentes correspondientes siguiendo la metodología BEM.
 
+---
+
+## 🔗 Demo en vivo
+[Haz clic aquí para ver la aplicación](https://hesepiri.github.io/web_project_around_react/)
+ 
 ---
 
 **Desarrollado por Héctor Pinedo Proyecto estudiante del Bootcamp de Desarrollo Web de TripleTen.**
