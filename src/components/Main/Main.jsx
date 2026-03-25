@@ -14,6 +14,7 @@ function Main({
   onCardLike, // Recibe la funcion del "boss" App
   onCardDelete, // Recibe la funcion del "boss" App
   onAddPlaceSubmit,
+  onCardClick,
 }) {
   const { currentUser } = useContext(CurrentUserContext);
 
@@ -81,6 +82,7 @@ function Main({
               card={card}
               onCardLike={onCardLike} // S15 - Nueva prop
               onCardDelete={onCardDelete} // S15 - Nueva prop
+              onCardClick={onCardClick}
             /> // Pasamos la función a cada tarjeta
           ))}
         </ul>

@@ -123,6 +123,19 @@ function App() {
       .catch((err) => console.error("Error al agregar tarjeta:", err));
   }
 
+  function handleCardClick(card) {
+    setPopup({
+      title: "", // En el popup de imagen el título suele ir abajo, no arriba
+      isImage: true, // Esta bandera nos ayudará a quitar el fondo blanco
+      children: (
+        <>
+          <img src={card.link} alt={card.name} className="popup__image" />
+          <p className="popup__caption">{card.name}</p>
+        </>
+      ),
+    });
+  }
+
   return (
     <CurrentUserContext.Provider
       value={{ currentUser, handleUpdateUser, handleUpdateAvatar }}
@@ -137,6 +150,7 @@ function App() {
           onCardLike={handleCardLike}
           onCardDelete={handleCardDelete}
           onAddPlaceSubmit={handleAddPlaceSubmit}
+          onCardClick={handleCardClick}
         />
         <Footer />
       </div>
